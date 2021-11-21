@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <title>Lab 9</title>
 
   <style>
@@ -88,6 +89,13 @@
   </main>
 
   <script>
+    // step 3
+    class DivideByZero extends TypeError {
+      constructor(msg) {
+        super(msg);
+        this.name = 'DivideByZero';
+      }
+    }
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,14 +103,126 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        if (`${operator}` == '/' && `${secondNum}` == 0) {
+          throw new DivideByZero('Divide by zero');
+        }
+        else {
+          output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        }
+      }
+      catch (error) {
+        alert(error)
+      }
+      finally {
+        console.log('done');
+      }
     });
-
+    // step 2
+    let errBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+    const label = "whatever";
+    for (const btn of errBtns) {
+      switch (btn.textContent) {
+        case 'Console Log':
+          btn.addEventListener('click', () => {
+            console.log(`${btn.textContent} Button Clicked.`);
+          });
+          break;
+        case 'Console Error':
+          btn.addEventListener('click', () => {
+            console.error(`${btn.textContent} Button Clicked.`);
+          });
+          break;
+        case 'Console Count':
+          btn.addEventListener('click', () => {
+            console.count(`${btn.textContent} Button Clicked.`);
+          });
+          break;
+        case 'Console Warn':
+          btn.addEventListener('click', () => {
+            console.warn(`${btn.textContent} Button Clicked.`);
+          });
+          break;
+        case 'Console Assert':
+          const x = 1, y = 2, why = '1 != 2';
+          btn.addEventListener('click', () => {
+            console.assert(x == y, { x, y, why });
+          });
+          break;
+        case 'Console Clear':
+          btn.addEventListener('click', () => {
+            console.clear();
+          });
+          break;
+        case 'Console Dir':
+          btn.addEventListener('click', () => {
+            console.dir(document.head);
+          });
+          break;
+        case 'Console dirxml':
+          btn.addEventListener('click', () => {
+            console.dirxml(document);
+          });
+          break;
+        case 'Console Group Start':
+          btn.addEventListener('click', () => {
+            console.group(label);
+          });
+          break;
+        case 'Console Group End':
+          btn.addEventListener('click', () => {
+            console.groupEnd(label);
+          });
+          break;
+        case 'Console Table':
+          btn.addEventListener('click', () => {
+            console.table([
+              { city: 'San Diego', nickname: "America's finest city" },
+              { city: 'Shanghai', nickname: "Pearl of the Orient" },
+              { city: 'Osaka', nickname: "Tenka no Daidokoro" }
+            ]);
+          });
+          break;
+        case 'Start Timer':
+          btn.addEventListener('click', () => {
+            console.time();
+          })
+          break;
+        case 'End Timer':
+          btn.addEventListener('click', () => {
+            console.timeEnd();
+          })
+          break;
+        case 'Console Trace':
+          btn.addEventListener('click', () => {
+            const fst = () => { sec(); };
+            const sec = () => { trd(); };
+            const trd = () => { frth(); };
+            const frth = () => { console.trace(); };
+            fst();
+          })
+          break;
+        case 'Trigger a Global Error':
+          btn.addEventListener('click', () => {
+            console.log(document.querySelector('Do not exist').textContent);
+          })
+          break;
+      }
+      window.onerror = function (msg, url, lineNo, columnNo, error) {
+        console.log(`(${lineNo},${columnNo}): ${error} - ${msg}`);
+      }
+    }
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-
-    // Start your code here
-    // You may move this JS to another file if you wish
   </script>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({
+      token: "700ed1eba6234e8aa43345162233825d"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+    TrackJS.track('Testing TrackJS!');
+  </script>
+
 </body>
 
 </html>
